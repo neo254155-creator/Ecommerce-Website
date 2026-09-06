@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Your cart · UrbanMart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="site-header-root"></div>
+
+<main class="wrap">
+  <section class="page-intro" style="padding-bottom:10px;">
+    <div class="eyebrow">Step 1 of 2</div>
+    <h1>Your cart</h1>
+  </section>
+
+  <div class="cart-layout" id="cart-layout">
+    <div class="cart-list" id="cart-list"></div>
+    <aside class="summary-card">
+      <h3>Order summary</h3>
+      <div class="summary-line"><span>Items</span><span id="summary-count">0</span></div>
+      <div class="summary-line total"><span>Total</span><span class="amt" id="summary-total">₹0</span></div>
+      <button class="btn btn-primary btn-block btn-lg" id="checkout-btn" style="margin-top:18px;">
+        Proceed to checkout
+      </button>
+    </aside>
+  </div>
+</main>
+
+<script src="assets/api.js"></script>
+<script src="assets/cart.js"></script>
+</body>
+</html>

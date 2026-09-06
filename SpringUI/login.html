@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Log in · UrbanMart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="site-header-root"></div>
+
+<div class="confirm-wrap" style="margin-top:60px;">
+  <h1 style="font-size:26px;">Welcome back</h1>
+  <p>Log in to pick up your cart and past orders.</p>
+
+  <form class="form-card" id="login-form" style="text-align:left;">
+    <div class="field">
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" autocomplete="username" required />
+    </div>
+    <div class="field" style="margin-bottom:8px;">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="current-password" required />
+    </div>
+    <button type="submit" class="btn btn-primary btn-block btn-lg" id="login-submit">Log in</button>
+    <p style="text-align:center;font-size:13.5px;color:var(--ink-faint);margin-top:18px;">
+      New here? <a href="signup.html" style="color:var(--primary-dark);font-weight:600;">Create an account</a>
+    </p>
+  </form>
+</div>
+
+<script src="assets/api.js"></script>
+<script>
+  renderHeader(null);
+
+  document.getElementById("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById("login-submit");
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Logging in…";
+    try {
+      const result = await apiFetch("/api/auth/login", {
+        method: "POST",
+        auth: false,
+        body: { username, password },
+      });
+      saveSession(result);
+      toast(`Welcome back, ${result.username}.`);
+      setTimeout(() => (window.location.href = "index.html"), 350);
+    } catch (err) {
+      toast(err.message, "error");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Log in";
+    }
+  });
+</script>
+</body>
+</html>

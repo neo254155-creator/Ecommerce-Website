@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UrbanMart — everyday goods, thoughtfully picked</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="site-header-root"></div>
+
+<main class="wrap">
+  <section class="page-intro">
+    <div class="eyebrow">The shop</div>
+    <h1>Everything for the week, in one place.</h1>
+   
+  </section>
+
+  <div class="filter-bar">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="search-input" placeholder="Search products…" />
+    </div>
+    <div class="chip-row" id="category-chips">
+      <button class="chip active" data-category="">All</button>
+    </div>
+  </div>
+
+  <div id="product-grid" class="product-grid"></div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-wrap">
+    <div class="footer-links">
+      <a href="#">About Us</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms &amp; Conditions</a>
+    </div>
+
+    <div class="footer-developer">
+      <p>Designed &amp; Developed by Aditya Kumar Chaubey</p>
+    </div>
+
+    <div class="footer-socials">
+      <span>Follow / Connect</span>
+      <a href="https://github.com/neo254155-creator" target="_blank" rel="noreferrer">GitHub</a>
+      <a href="https://www.linkedin.com/in/adityakchaubey/" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a href="mailto:neo254155@gmail.com">Email</a>
+    </div>
+
+    <div class="footer-copy">© 2026 UrbanMart. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="assets/api.js"></script>
+<script src="assets/home.js"></script>
+</body>
+</html>

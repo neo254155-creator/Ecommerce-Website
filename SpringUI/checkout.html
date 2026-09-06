@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Checkout · UrbanMart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="site-header-root"></div>
+
+<main class="wrap">
+  <section class="page-intro" style="padding-bottom:10px;">
+    <div class="eyebrow">Step 2 of 2</div>
+    <h1>Delivery details</h1>
+  </section>
+
+  <div class="checkout-layout">
+    <form class="form-card" id="checkout-form">
+      <h3>Where should this go?</h3>
+      <p class="hint">We'll use these details just for this order.</p>
+
+      <div class="field-row">
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" required />
+        </div>
+        <div class="field">
+          <label for="phno">Phone number</label>
+          <input id="phno" type="tel" required />
+        </div>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" required />
+      </div>
+      <div class="field" style="margin-bottom:6px;">
+        <label for="address">Delivery address</label>
+        <textarea id="address" rows="3" required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" id="place-order-btn" style="margin-top:14px;">
+        Place order
+      </button>
+    </form>
+
+    <aside class="summary-card" style="position:static;">
+      <h3>You're paying</h3>
+      <div class="summary-line total"><span>Order total</span><span class="amt" id="checkout-total">₹0</span></div>
+      <p style="font-size:12.5px;color:var(--ink-faint);margin-top:14px;">
+        Stock is checked again the moment you place the order — quantities never oversell.
+      </p>
+    </aside>
+  </div>
+</main>
+
+<script src="assets/api.js"></script>
+<script src="assets/checkout.js"></script>
+</body>
+</html>

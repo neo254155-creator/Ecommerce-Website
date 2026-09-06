@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign up · UrbanMart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="site-header-root"></div>
+
+<div class="confirm-wrap" style="margin-top:60px;">
+  <h1 style="font-size:26px;">Create your account</h1>
+  <p>Takes a few seconds - then you can add to cart and check out.</p>
+
+  <form class="form-card" id="signup-form" style="text-align:left;">
+    <div class="field">
+      <label for="name">Full Name</label>
+      <input id="name" name="name" type="text" autocomplete="name" required />
+    </div>
+    <div class="field">
+      <label for="username">Username</label>
+      <input id="username" name="username" type="text" autocomplete="username" required />
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" autocomplete="email" required />
+    </div>
+    <div class="field">
+      <label for="phone">Phone Number</label>
+      <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" required />
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" autocomplete="new-password" minlength="6" required />
+      <div style="font-size:12px;color:var(--ink-faint);margin-top:5px;">At least 6 characters.</div>
+    </div>
+    <div class="field" style="margin-bottom:8px;">
+      <label for="confirm">Confirm password</label>
+      <input id="confirm" name="confirm" type="password" autocomplete="new-password" required />
+    </div>
+    <button type="submit" class="btn btn-primary btn-block btn-lg" id="signup-submit">Create account</button>
+    <p style="text-align:center;font-size:13.5px;color:var(--ink-faint);margin-top:18px;">
+      Already have an account? <a href="login.html" style="color:var(--primary-dark);font-weight:600;">Log in</a>
+    </p>
+  </form>
+</div>
+
+<script src="assets/api.js"></script>
+<script>
+  renderHeader(null);
+
+  document.getElementById("signup-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById("signup-submit");
+    const name = document.getElementById("name").value.trim();
+    const username = document.getElementById("username").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const password = document.getElementById("password").value;
+    const confirm = document.getElementById("confirm").value;
+
+    if (password !== confirm) {
+      toast("Passwords don't match.", "error");
+      return;
+    }
+
+    if (!name || !email || !phone) {
+      toast("Please enter your full name, email and phone number.", "error");
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Creating account…";
+    try {
+      await apiFetch("/api/auth/signup", {
+        method: "POST",
+        auth: false,
+        body: { name, username, password, email, phno: Number(phone) },
+      });
+
+      const loginResult = await apiFetch("/api/auth/login", {
+        method: "POST",
+        auth: false,
+        body: { username, password },
+      });
+      saveSession(loginResult);
+      toast("Account created. Welcome to UrbanMart!");
+      setTimeout(() => (window.location.href = "index.html"), 350);
+    } catch (err) {
+      toast(err.message, "error");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Create account";
+    }
+  });
+</script>
+</body>
+</html>

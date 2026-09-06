@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Profile · UrbanMart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="site-header-root"></div>
+
+<main class="wrap">
+  <section class="page-intro" style="padding-bottom:10px;">
+    <div class="eyebrow">Account</div>
+    <h1>My profile</h1>
+  </section>
+
+  <div class="profile-layout">
+    <div class="profile-card">
+      <div class="profile-avatar" id="profile-avatar">U</div>
+      <div class="profile-header-meta">
+        <h2 id="profile-name">User Name</h2>
+        <p id="profile-role">Customer</p>
+      </div>
+
+      <div class="profile-details" id="profile-details">
+        <div class="detail-row"><span>Email</span><strong id="profile-email">—</strong></div>
+        
+        <div class="detail-row"><span>Phone</span><strong id="profile-phone">—</strong></div>
+      </div>
+
+    </div>
+
+    <div class="profile-side-card">
+      <h3>Quick actions</h3>
+      <a href="orders.html" class="btn btn-outline btn-block">View orders</a>
+      <a href="index.html" class="btn btn-primary btn-block">Continue shopping</a>
+    </div>
+  </div>
+</main>
+
+<script src="assets/api.js"></script>
+<script>
+  requireLogin();
+  renderHeader("profile");
+
+  const profile = getProfileData();
+  document.getElementById("profile-avatar").textContent = (profile.name || profile.username || "U").charAt(0).toUpperCase();
+  document.getElementById("profile-name").textContent = profile.name || profile.username || "User";
+  document.getElementById("profile-role").textContent = profile.role || "CUSTOMER";
+  document.getElementById("profile-email").textContent = profile.email || "Not added yet";
+
+  document.getElementById("profile-phone").textContent = profile.phone || "Not added yet";
+</script>
+</body>
+</html>

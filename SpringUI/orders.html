@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>My orders · UrbanMart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="site-header-root"></div>
+
+<main class="wrap">
+  <section class="page-intro" style="padding-bottom:10px;">
+    <div class="eyebrow">History</div>
+    <h1>My orders</h1>
+  </section>
+
+  <div id="orders-list" style="display:flex;flex-direction:column;gap:12px;padding-bottom:60px;"></div>
+</main>
+
+<script src="assets/api.js"></script>
+<script>
+  requireLogin();
+  renderHeader("orders");
+  const user = getCurrentUser();
+  const ORDER_STORAGE_KEY = "meadow_orders";
+
+  function getStoredOrders() {
+    try {
+      const raw = localStorage.getItem(ORDER_STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function orderRowHTML(order) {
+    const total = order.totalAmount ?? order.amount ?? 0;
+    return `
+      <div class="order-card">
+        <div class="order-card-top">
+          <div>
+            <div class="order-label">Order #${order.orderId || "#" + order.id}</div>
+            <div class="order-date">${order.date || "Today"}</div>
+          </div>
+          <span class="status-badge">${order.status || "Placed"}</span>
+        </div>
+        <div class="order-card-bottom">
+          <div><strong>Items:</strong> ${order.items || 0}</div>
+          <div><strong>Total:</strong> ₹${Number(total).toFixed(0)}</div>
+        </div>
+      </div>`;
+  }
+
+  function loadOrders() {
+    const list = document.getElementById("orders-list");
+    const orders = getStoredOrders();
+
+    if (!orders || orders.length === 0) {
+      list.innerHTML = `
+        <div class="empty-state">
+          <h3>No orders yet</h3>
+          <p>Your order history will appear here after you place an order from your profile.</p>
+          <a href="profile.html" class="btn btn-primary">Go to profile</a>
+        </div>`;
+      return;
+    }
+
+    list.innerHTML = orders.map(orderRowHTML).join("");
+  }
+
+  loadOrders();
+</script>
+</body>
+</html>

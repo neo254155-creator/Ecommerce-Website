@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Order placed · UrbanMart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="site-header-root"></div>
+
+<div class="confirm-wrap" id="confirm-wrap">
+  <div class="confirm-badge">
+    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+  </div>
+  <h1>Order placed</h1>
+  <p>Thanks — we've got it. Here's your summary.</p>
+
+  <div class="receipt" id="receipt"></div>
+
+  <div class="confirm-actions">
+    <a href="orders.html" class="btn btn-outline">View my orders</a>
+    <a href="index.html" class="btn btn-primary">Keep shopping</a>
+  </div>
+</div>
+
+<script src="assets/api.js"></script>
+<script>
+  requireLogin();
+  renderHeader(null);
+
+  const raw = sessionStorage.getItem("meadow_last_order");
+  const receipt = document.getElementById("receipt");
+
+  if (!raw) {
+    document.getElementById("confirm-wrap").innerHTML = `
+      <h1>No order to show</h1>
+      <p>Looks like you got here directly. Head back to the shop to place an order.</p>
+      <a href="index.html" class="btn btn-primary">Go to shop</a>`;
+  } else {
+    const order = JSON.parse(raw);
+    receipt.innerHTML = `
+      <div class="receipt-row"><span class="label">Order ID</span><span class="value">#${order.orderId}</span></div>
+      <div class="receipt-row"><span class="label">Status</span><span class="status-badge">${order.status}</span></div>
+      <div class="receipt-row grand"><span class="label">Total paid</span><span class="value">₹${Number(order.totalAmount).toFixed(0)}</span></div>
+    `;
+    sessionStorage.removeItem("meadow_cart_total");
+  }
+</script>
+</body>
+</html>
