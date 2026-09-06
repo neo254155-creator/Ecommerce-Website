@@ -3,7 +3,7 @@
    Loaded on every page before the page's own script.
    ============================================ */
 
-const API_BASE = "http://localhost:8082";
+const API_BASE = "https://ecommerce-website-s7t4.onrender.com";
 
 const AUTH_TOKEN_KEY = "meadow_token";
 const AUTH_USER_KEY = "meadow_user";

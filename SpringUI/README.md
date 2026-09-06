@@ -12,11 +12,24 @@ you get back from `/login` doesn't correspond to any real Cart - that was the re
 loop you saw. Apply both patches, then sign up with a **brand new** account to test
 (accounts created before the patch won't have a linked profile).
 
-## Running it
-1. Backend running on `http://localhost:8082` (the configured port; `assets/api.js` already uses it).
-2. Open `index.html` directly, or serve the folder with any static file server.
-3. Sign up through the UI. To test admin, sign up, then run
+## Running locally
+1. Start the backend on `http://localhost:8082`.
+2. Change `API_BASE` in `assets/api.js` to `http://localhost:8082`.
+3. Open `index.html` directly, or serve the folder with any static file server.
+4. Sign up through the UI. To test admin, sign up, then run
    `UPDATE users_data SET role = 'ADMIN' WHERE username = '...'`, then log in again.
+
+## Deploying the frontend on Render
+
+Create a separate **Static Site** in Render using this same GitHub repository:
+
+- **Root Directory:** `SpringUI`
+- **Build Command:** leave empty
+- **Publish Directory:** `.`
+- **Rewrite rule:** `/*` → `/index.html`
+
+The frontend is already configured to call the deployed backend at
+`https://ecommerce-website-s7t4.onrender.com`.
 
 ## What each page calls (matched to your real code)
 
