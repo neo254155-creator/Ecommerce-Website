@@ -15,11 +15,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/**
- * Runs once per request. Reads the "Authorization: Bearer <token>" header,
- * and if it holds a valid token, tells Spring Security who is making this request.
- * There is no session - this filter is what re-establishes identity on every single call.
- */
+
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
 
