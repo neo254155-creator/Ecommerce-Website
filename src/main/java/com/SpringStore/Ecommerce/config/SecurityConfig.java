@@ -58,13 +58,13 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // public - anyone can sign up, log in, and browse the storefront
+              
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/products/**").permitAll()
                 .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/categories/**").permitAll()
 
-                // admin-only - catalog management and order status changes
+            
                 .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/products/**").hasRole("ADMIN")
                 .requestMatchers(org.springframework.http.HttpMethod.PUT, "/api/products/**").hasRole("ADMIN")
                 .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/api/products/**").hasRole("ADMIN")
@@ -74,7 +74,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/orders/*/status").hasRole("ADMIN")
                 .requestMatchers("/api/orders/admin/**").hasRole("ADMIN")
 
-                // everything else (cart, placing/viewing orders) just needs a logged-in account
+          
                 .anyRequest().authenticated()
             )
             .authenticationProvider(authenticationProvider())
