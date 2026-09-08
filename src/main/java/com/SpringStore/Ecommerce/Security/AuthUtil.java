@@ -21,7 +21,7 @@ public class AuthUtil {
     @Value("${jwt.secretKey}")
     private String jwtSecretKey;
 
-    // 24 hours - long enough that you are not re-logging in every few minutes while testing
+    
     @Value("${jwt.expirationMs:86400000}")
     private long expirationMs;
 
