@@ -47,6 +47,12 @@ function dedupeProducts(products) {
   });
 }
 
+function visibleProducts(products) {
+  return dedupeProducts(products).filter((product) => {
+    return !hiddenProductNames.has(normalizeProductName(product && product.name));
+  });
+}
+
 function productImage(product) {
   return productImages[normalizeProductName(product && product.name)] || "";
 }
@@ -93,7 +99,7 @@ function escapeHtml(str) {
 
 function renderProducts(products) {
   const grid = document.getElementById("product-grid");
-  const cleanProducts = dedupeProducts(products);
+  const cleanProducts = visibleProducts(products);
 
   if (!cleanProducts || cleanProducts.length === 0) {
     grid.innerHTML = `
@@ -209,7 +215,7 @@ async function loadProducts() {
     } else {
       products = await apiFetch("/api/products", { auth: false });
     }
-    renderProducts(products);
+    renderProducts(visibleProducts(products));
   } catch (err) {
     grid.innerHTML = `
       <div class="empty-state" style="grid-column:1/-1;">
