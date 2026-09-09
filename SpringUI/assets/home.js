@@ -3,21 +3,35 @@ renderHeader("home");
 let activeCategoryId = "";
 let searchTimer = null;
 
-const curatedProducts = [
-  { id: 1001, name: "RGB Mechanical Keyboard", categoryName: "Electronics", description: "RGB mechanical keyboard with responsive switches and ergonomic layout.", price: 4999, stock: 18 },
-  { id: 1002, name: "Classic Breathable Cotton T-Shirt", categoryName: "Fashion", description: "Soft cotton tee designed for all-day comfort and everyday wear.", price: 999, stock: 32 },
-  { id: 1003, name: "SpeedFlex Lightweight Running Shoes", categoryName: "Sports", description: "Responsive running shoes with lightweight cushioning and grip.", price: 2499, stock: 22 },
-  { id: 1004, name: "Minimalist Nordic Desk Lamp", categoryName: "Home & Kitchen", description: "Warm ambient desk lamp with a clean Nordic-inspired silhouette.", price: 1899, stock: 16 },
-  { id: 1005, name: "Coffee Mug Set", categoryName: "Home & Kitchen", description: "Ceramic mug set for cozy mornings and home styling.", price: 1299, stock: 20 },
-  { id: 1006, name: "Smartwatch Pro", categoryName: "Electronics", description: "Bluetooth smartwatch with heart-rate tracking and AMOLED display.", price: 4999, stock: 18 },
-  { id: 1007, name: "Wireless Headphones", categoryName: "Electronics", description: "Noise-cancelling wireless headphones for work and travel.", price: 3299, stock: 14 },
-  { id: 1008, name: "Leather Backpack", categoryName: "Fashion", description: "Durable everyday backpack with padded laptop sleeve.", price: 2799, stock: 16 },
-  { id: 1009, name: "Yoga Mat", categoryName: "Sports", description: "Non-slip yoga mat for workouts, pilates, and stretching.", price: 1799, stock: 25 },
-  { id: 1010, name: "Digital Camera", categoryName: "Electronics", description: "Compact digital camera for crisp photos and travel moments.", price: 8999, stock: 9 },
-  { id: 1011, name: "Floral Dress", categoryName: "Fashion", description: "Elegant floral dress designed for casual day wear.", price: 3199, stock: 12 },
-  { id: 1012, name: "Face Serum", categoryName: "Beauty", description: "Hydrating face serum for a fresh, radiant complexion.", price: 1499, stock: 30 },
-  { id: 1013, name: "Hardcover Novel", categoryName: "Books", description: "A bestselling hardback novel for evening reading.", price: 699, stock: 40 }
-];
+const productImages = {
+	"wireless headphones": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=700&q=80",
+	    "mechanical keyboard": "https://www.redragon.in/cdn/shop/files/9_f8b13895-b9ee-4116-bc74-805598c9ff57.jpg?v=1781332434&width=1500",
+	    "smart watch": "https://rukminim2.flixcart.com/image/480/640/xif0q/smartwatch/4/2/u/-enriched-transparent-original-imah2gmfkdccr5h3.png?q=20",
+	    "portable bluetooth speaker": "https://images.unsplash.com/photo-1518444065439-e933c06ce9cd?auto=format&fit=crop&w=700&q=80",
+	    "usb c fast charger": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=700&q=80",
+	    "ceramic coffee mug": "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=700&q=80",
+	    "bamboo cutting board": "https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=700&q=80",
+	    "stainless steel bottle": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=700&q=80",
+	    "cotton bedsheet set": "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?auto=format&fit=crop&w=700&q=80",
+	    "desk organizer": "https://images.unsplash.com/photo-1494438639940-9ebd6d95f6bf?auto=format&fit=crop&w=700&q=80",
+	    "canvas backpack": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=700&q=80",
+	    "classic wrist watch": "https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=700&q=80",
+	    "cotton t shirt": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=700&q=80",
+	    "leather wallet": "https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=700&q=80",
+	    "running shoes": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80",
+	    "face moisturizer": "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=700&q=80",
+	    "herbal shampoo": "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=700&q=80",
+	    "sunscreen spf 50": "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?auto=format&fit=crop&w=700&q=80",
+	    "aloe vera face wash": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=700&q=80",
+	    "lip balm set": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=700&q=80",
+	    "yoga mat": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=700&q=80",
+	    "insulated sports bottle": "https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=700&q=80",
+	    "resistance bands set": "https://images.unsplash.com/photo-1598289431512-b97b0917affc?auto=format&fit=crop&w=700&q=80",
+	    "badminton racket": "https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?auto=format&fit=crop&w=700&q=80",
+	    "the alchemist": "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=700&q=80",
+	    "atomic habits": "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80",
+	    "clean code": "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=700&q=80",
+	    "the little prince": "https://images.unsplash.com/photo-1526243741027-444d633d7365?auto=format&fit=crop&w=700&q=80"          };
 
 function normalizeProductName(value) {
   return String(value || "").trim().toLowerCase().replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ");
