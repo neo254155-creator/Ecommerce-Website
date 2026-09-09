@@ -28,7 +28,6 @@ FROM (VALUES
     ('Wireless Headphones', 2499.00, 30, 'Comfortable over-ear headphones with clear sound.', 'Electronics'),
     ('Mechanical Keyboard', 3299.00, 24, 'Tactile keyboard for work, gaming, and everyday typing.', 'Electronics'),
     ('Smart Watch', 4999.00, 18, 'Fitness tracking, notifications, and a bright touch display.', 'Electronics'),
-    ('Portable Bluetooth Speaker', 1899.00, 35, 'Compact speaker with powerful sound for any room.', 'Electronics'),
     ('USB-C Fast Charger', 899.00, 50, 'Fast and reliable charging for compatible devices.', 'Electronics'),
     ('Ceramic Coffee Mug', 399.00, 60, 'Minimal ceramic mug for coffee, tea, or hot chocolate.', 'Home & Kitchen'),
     ('Bamboo Cutting Board', 799.00, 28, 'Durable bamboo board for daily meal preparation.', 'Home & Kitchen'),
