@@ -3,6 +3,22 @@ renderHeader("home");
 let activeCategoryId = "";
 let searchTimer = null;
 
+const curatedProducts = [
+  { id: 1001, name: "RGB Mechanical Keyboard", categoryName: "Electronics", description: "RGB mechanical keyboard with responsive switches and ergonomic layout.", price: 4999, stock: 18 },
+  { id: 1002, name: "Classic Breathable Cotton T-Shirt", categoryName: "Fashion", description: "Soft cotton tee designed for all-day comfort and everyday wear.", price: 999, stock: 32 },
+  { id: 1003, name: "SpeedFlex Lightweight Running Shoes", categoryName: "Sports", description: "Responsive running shoes with lightweight cushioning and grip.", price: 2499, stock: 22 },
+  { id: 1004, name: "Minimalist Nordic Desk Lamp", categoryName: "Home & Kitchen", description: "Warm ambient desk lamp with a clean Nordic-inspired silhouette.", price: 1899, stock: 16 },
+  { id: 1005, name: "Coffee Mug Set", categoryName: "Home & Kitchen", description: "Ceramic mug set for cozy mornings and home styling.", price: 1299, stock: 20 },
+  { id: 1006, name: "Smartwatch Pro", categoryName: "Electronics", description: "Bluetooth smartwatch with heart-rate tracking and AMOLED display.", price: 4999, stock: 18 },
+  { id: 1007, name: "Wireless Headphones", categoryName: "Electronics", description: "Noise-cancelling wireless headphones for work and travel.", price: 3299, stock: 14 },
+  { id: 1008, name: "Leather Backpack", categoryName: "Fashion", description: "Durable everyday backpack with padded laptop sleeve.", price: 2799, stock: 16 },
+  { id: 1009, name: "Yoga Mat", categoryName: "Sports", description: "Non-slip yoga mat for workouts, pilates, and stretching.", price: 1799, stock: 25 },
+  { id: 1010, name: "Digital Camera", categoryName: "Electronics", description: "Compact digital camera for crisp photos and travel moments.", price: 8999, stock: 9 },
+  { id: 1011, name: "Floral Dress", categoryName: "Fashion", description: "Elegant floral dress designed for casual day wear.", price: 3199, stock: 12 },
+  { id: 1012, name: "Face Serum", categoryName: "Beauty", description: "Hydrating face serum for a fresh, radiant complexion.", price: 1499, stock: 30 },
+  { id: 1013, name: "Hardcover Novel", categoryName: "Books", description: "A bestselling hardback novel for evening reading.", price: 699, stock: 40 }
+];
+
 function normalizeProductName(value) {
   return String(value || "").trim().toLowerCase().replace(/[^a-z0-9]+/g, " ").replace(/\s+/g, " ");
 }
@@ -17,39 +33,112 @@ function dedupeProducts(products) {
   });
 }
 
+function mergeCuratedProducts(products) {
+  const merged = [...dedupeProducts(products)];
+  const existingNames = new Set(merged.map((product) => normalizeProductName(product.name)));
+
+  curatedProducts.forEach((product) => {
+    if (!existingNames.has(normalizeProductName(product.name))) {
+      merged.push({ ...product, id: `${product.id}` });
+      existingNames.add(normalizeProductName(product.name));
+    }
+  });
+
+  return dedupeProducts(merged);
+}
+
 function productImage(product) {
-  const productImages = {
-    "wireless headphones": "https://loremflickr.com/700/700/wireless,headphones",
-    "mechanical keyboard": "https://loremflickr.com/700/700/mechanical,keyboard",
-    "smart watch": "https://loremflickr.com/700/700/smartwatch",
-    "portable bluetooth speaker": "https://loremflickr.com/700/700/bluetooth,speaker",
-    "usb c fast charger": "https://loremflickr.com/700/700/usb,charger",
-    "ceramic coffee mug": "https://loremflickr.com/700/700/coffee,mug",
-    "bamboo cutting board": "https://loremflickr.com/700/700/bamboo,cutting,board",
-    "stainless steel bottle": "https://loremflickr.com/700/700/stainless,steel,bottle",
-    "cotton bedsheet set": "https://loremflickr.com/700/700/bedsheet",
-    "desk organizer": "https://loremflickr.com/700/700/desk,organizer",
-    "canvas backpack": "https://loremflickr.com/700/700/canvas,backpack",
-    "classic wrist watch": "https://loremflickr.com/700/700/wristwatch",
-    "cotton t shirt": "https://loremflickr.com/700/700/cotton,tshirt",
-    "leather wallet": "https://loremflickr.com/700/700/leather,wallet",
-    "running shoes": "https://loremflickr.com/700/700/running,shoes",
-    "face moisturizer": "https://loremflickr.com/700/700/moisturizer",
-    "herbal shampoo": "https://loremflickr.com/700/700/shampoo",
-    "sunscreen spf 50": "https://loremflickr.com/700/700/sunscreen",
-    "aloe vera face wash": "https://loremflickr.com/700/700/aloe,face,wash",
-    "lip balm set": "https://loremflickr.com/700/700/lip,balm",
-    "yoga mat": "https://loremflickr.com/700/700/yoga,mat",
-    "insulated sports bottle": "https://loremflickr.com/700/700/sports,bottle",
-    "resistance bands set": "https://loremflickr.com/700/700/resistance,bands",
-    "badminton racket": "https://loremflickr.com/700/700/badminton,racket",
-    "the alchemist": "https://loremflickr.com/700/700/the,alchemist,book",
-    "atomic habits": "https://loremflickr.com/700/700/atomic,habits,book",
-    "clean code": "https://loremflickr.com/700/700/clean,code,book",
-    "the little prince": "https://loremflickr.com/700/700/the,little,prince,book"
+  const productName = (product && product.name ? product.name : "").toLowerCase();
+  const exactMatches = [
+    { names: ["ergonomic mechanical keyboard"], url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMjFIb_yQJWFzV4IqU4bd87PUs7TmyrKzRzxn4kjBabA&s" },
+    { names: ["rgb mechanical keyboard", "mechanical keyboard", "gaming keyboard"], url: "https://www.redragon.in/cdn/shop/files/9_f8b13895-b9ee-4116-bc74-805598c9ff57.jpg?v=1781332434&width=1500" },
+    { names: ["smartwatch pro"], url: "https://rukminim2.flixcart.com/image/480/640/xif0q/smartwatch/4/2/u/-enriched-transparent-original-imah2gmfkdccr5h3.png?q=20" },
+    { names: ["classic breathable cotton t-shirt", "cotton t-shirt", "t-shirt"], url: "https://nobero.com/cdn/shop/files/Hopev2.jpg?v=1771572686" },
+    { names: ["urban pro travel backpack", "urban travel bag"], url: "https://urbanjungle.shop/cdn/shop/files/RAVEN-1.jpg?v=1752151153&width=1000" },
+    { names: ["speedflex lightweight running shoes", "running shoes", "lightweight running shoes", "sport shoes"], url: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80" },
+    { names: ["minimalist nordic desk lamp", "minimalist lamp", "desk lamp", "nordic desk lamp"], url: "https://www.homesake.in/cdn/shop/files/IH0F253-BK-PWT_Theme2.jpg?v=1757399379&width=1920" },
+    { names: ["ceramic artisan coffee mug set"], url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKjytOr843q4nMj3-9oVQhQPnY8RPIumLdWSJh01Mxjg&s=10" },
+    { names: ["coffee mug set", "ceramic coffee mug set", "mug set", "coffee mug"], url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ97ffds5R0A1JcVAMJPApGinRo7R73JOTILnoqUuBYJVed6X29zWMjDsM&s=10" },
+    { names: ["wireless mouse", "computer mouse", "mouse"], url: "https://m.media-amazon.com/images/I/61iw9q2FAVL.jpg" },
+    { names: ["yoga mat"], url: "https://www.cockatooindia.com/cdn/shop/files/61z-Ks-b0GL._SL1500.jpg?v=1737374339" },
+    { names: ["face serum", "serum"], url: "https://m.media-amazon.com/images/I/51O3TUGD5FL._AC_UF1000,1000_QL80_.jpg" },
+    { names: ["floral dress"], url: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF_sV-LDw3X2uVXhtync0mwEPG-vW4orPASv_rDkUgNc_ELU_jr1Tfr6A&s=10" }
+  ];
+
+  const exactMatch = exactMatches.find((entry) => entry.names.some((name) => productName.includes(name)));
+  if (exactMatch) return exactMatch.url;
+
+  const keywordMatches = [
+    { keywords: ["watch", "smartwatch", "timepiece", "wrist"], url: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["headphone", "earbud", "headset", "earphone", "audio"], url: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["laptop", "notebook", "computer", "macbook", "keyboard"], url: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["phone", "mobile", "smartphone", "iphone", "android"], url: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["shoe", "sneaker", "boots", "sandals", "slipper"], url: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["shirt", "dress", "hoodie", "jacket", "kurta", "top", "jeans", "trouser", "cloth", "saree", "sandal"], url: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["bag", "purse", "handbag", "backpack", "wallet"], url: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["lamp", "light", "bulb", "ceiling", "decor"], url: "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["chair", "sofa", "table", "desk", "furniture", "cabinet"], url: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["mug", "cup", "kettle", "pan", "cookware", "bowl", "utensil"], url: "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["perfume", "fragrance", "deodorant", "spray"], url: "https://images.unsplash.com/photo-1528740561666-dc2479dc08ab?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["lipstick", "makeup", "cosmetic", "foundation", "nail", "skincare", "cream", "serum"], url: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["yoga", "fitness", "dumbbell", "treadmill", "sports", "gym", "football", "soccer", "bat", "racket", "helmet"], url: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["book", "novel", "journal", "notebook", "story", "textbook", "dictionary"], url: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["speaker", "soundbar", "speaker system", "music"], url: "https://images.unsplash.com/photo-1518444065439-e933c06ce9cd?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["camera", "dslr", "lens", "tripod"], url: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=700&q=80" },
+    { keywords: ["toy", "game", "puzzle", "remote"], url: "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=700&q=80" }
+  ];
+
+  for (const match of keywordMatches) {
+    if (match.keywords.some((keyword) => productName.includes(keyword))) {
+      return match.url;
+    }
+  }
+
+  const imageSets = {
+    Electronics: [
+      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?auto=format&fit=crop&w=700&q=80",
+    ],
+    "Home & Kitchen": [
+      "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=700&q=80",
+    ],
+    Fashion: [
+      "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=700&q=80",
+    ],
+    Beauty: [
+      "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=700&q=80",
+    ],
+    Sports: [
+      "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1579952363873-27f3b06144945?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1538805060514-97d9cc17730c?auto=format&fit=crop&w=700&q=80",
+    ],
+    Books: [
+      "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1495446815901-a7297e633e8d?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=700&q=80",
+      "https://images.unsplash.com/photo-1526243741027-444d633d7365?auto=format&fit=crop&w=700&q=80",
+    ],
   };
 
-  return productImages[normalizeProductName(product && product.name)] || "";
+  const images = imageSets[product.categoryName] || imageSets.Electronics;
+  let hash = 0;
+  for (const character of productName || "") {
+    hash = character.charCodeAt(0) + ((hash << 5) - hash);
+  }
+  return images[Math.abs(hash) % images.length];
 }
 
 function productCardHTML(product) {
@@ -66,8 +155,8 @@ function productCardHTML(product) {
   return `
     <div class="product-card" data-product-id="${product.id}">
       <div class="product-tile" style="background:${color};">
-        ${image ? `<img src="${image}" alt="${escapeHtml(product.name)}" loading="lazy"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />` : ""}
+        <img src="${image}" alt="${escapeHtml(product.name)}" loading="lazy"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
         <span class="product-image-fallback">${initials(product.name)}</span>
       </div>
       <div class="product-body">
@@ -94,7 +183,7 @@ function escapeHtml(str) {
 
 function renderProducts(products) {
   const grid = document.getElementById("product-grid");
-  const cleanProducts = dedupeProducts(products);
+  const cleanProducts = mergeCuratedProducts(products);
 
   if (!cleanProducts || cleanProducts.length === 0) {
     grid.innerHTML = `
@@ -210,7 +299,8 @@ async function loadProducts() {
     } else {
       products = await apiFetch("/api/products", { auth: false });
     }
-    renderProducts(products);
+    const catalog = mergeCuratedProducts(products);
+    renderProducts(catalog);
   } catch (err) {
     grid.innerHTML = `
       <div class="empty-state" style="grid-column:1/-1;">
