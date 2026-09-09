@@ -2,6 +2,7 @@ renderHeader("home");
 
 let activeCategoryId = "";
 let searchTimer = null;
+const hiddenProductNames = new Set(["portable bluetooth speaker"]);
 
 const productImages = {
 	"wireless headphones": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=700&q=80",
@@ -40,7 +41,7 @@ function dedupeProducts(products) {
   const seen = new Set();
   return (products || []).filter((product) => {
     const key = normalizeProductName(product && product.name);
-    if (!key || seen.has(key)) return false;
+    if (!key || hiddenProductNames.has(key) || seen.has(key)) return false;
     seen.add(key);
     return true;
   });
